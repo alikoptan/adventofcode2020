@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <regex>
 using namespace std;
 
 class day4 {
@@ -38,36 +39,12 @@ private:
     static bool verify_hgt(const string& hgt) {
         size_t splitIndex = hgt.find(':');
         string height = hgt.substr(splitIndex + 1, hgt.size() - splitIndex);
-        size_t unit = height.find("cm");
-        bool validHeight = false;
-        if (unit != -1) {
-            int h = 0;
-            for (size_t i = 0; i < unit; i++) {
-                h *= 10;
-                h += height[i] - '0';
-            }
-            validHeight |= (h >= 150 && h <= 193);
-        }
-        unit = height.find("in");
-        if (unit != -1) {
-            int h = 0;
-            for (size_t i = 0; i < unit; i++) {
-                h *= 10;
-                h += height[i] - '0';
-            }
-            validHeight |= (h >= 59 && h <= 76);
-        }
-        return validHeight;
+        return regex_match(height, regex("(1[5-8][0-9]|19[0-3])cm")) or regex_match(height, regex("(59|6[0-9]|7[0-6])in"));
     }
     static bool verify_hcl(const string& hcl) {
         size_t splitIndex = hcl.find(':');
         string hairColor = hcl.substr(splitIndex + 1, hcl.size() - splitIndex);
-        if (hairColor.size() != 7 || hairColor[0] != '#') return false;
-        bool matchesPattern = true;
-        for (size_t i = 1; i < hairColor.size(); i++) {
-            matchesPattern &= (hairColor[i] >= '0' && hairColor[i] <= '9') || (hairColor[i] >= 'a' && hairColor[i] <= 'f');
-        }
-        return matchesPattern;
+        return regex_match(hairColor, regex("#([0-9]|[a-f]){6}"));
     }
     static bool verify_ecl(const string& ecl) {
         size_t splitIndex = ecl.find(':');
@@ -77,11 +54,7 @@ private:
     static bool verify_pid(const string& pid) {
         size_t splitIndex = pid.find(':');
         string passport = pid.substr(splitIndex + 1, pid.size() - splitIndex);
-        bool allDigits = true;
-        for (const auto& digit : passport) {
-            allDigits &= (digit >= '0' && digit <= '9');
-        }
-        return passport.size() == 9 && allDigits;
+        return regex_match(passport, regex("[0-9]{9}"));
     }
     static bool verify_cid(const string& cid) {
         return true; // :)
