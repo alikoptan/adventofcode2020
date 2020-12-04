@@ -24,20 +24,16 @@ private:
         }
         textInput.push_back(inputLine);
     }
-    static bool verify_byr(const string& byr) {
-        size_t splitIndex = byr.find(':');
-        int year = stoi(byr.substr(splitIndex + 1, byr.size() - splitIndex));
-        return (year >= 1920 && year <= 2002);
-    }
-    static bool verify_iyr(const string& iyr) {
-        size_t splitIndex = iyr.find(':');
-        int year = stoi(iyr.substr(splitIndex + 1, iyr.size() - splitIndex));
-        return (year >= 2010 && year <= 2020);
-    }
-    static bool verify_eyr(const string& eyr) {
-        size_t splitIndex = eyr.find(':');
-        int year = stoi(eyr.substr(splitIndex + 1, eyr.size() - splitIndex));
-        return (year >= 2020 && year <= 2030);
+    static bool verify_year(const string& yearToken) {
+        size_t splitIndex = yearToken.find(':');
+        int year = stoi(yearToken.substr(splitIndex + 1, yearToken.size() - splitIndex));
+        string id = yearToken.substr(0, 3);
+        if (id == "byr")
+            return (year >= 1920 && year <= 2002);
+        if (id == "iyr")
+            return (year >= 2010 && year <= 2020);
+        if (id == "eyr")
+            return (year >= 2020 && year <= 2030);
     }
     static bool verify_hgt(const string& hgt) {
         size_t splitIndex = hgt.find(':');
@@ -129,9 +125,9 @@ private:
         }
     }
     void mapFunctions() {
-        verifyTable["byr"] = verify_byr;
-        verifyTable["iyr"] = verify_iyr;
-        verifyTable["eyr"] = verify_eyr;
+        verifyTable["byr"] = verify_year;
+        verifyTable["iyr"] = verify_year;
+        verifyTable["eyr"] = verify_year;
         verifyTable["hgt"] = verify_hgt;
         verifyTable["hcl"] = verify_hcl;
         verifyTable["ecl"] = verify_ecl;
