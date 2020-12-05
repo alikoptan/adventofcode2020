@@ -17,21 +17,19 @@ private:
     int getSeat(string pass) {
         int seatID = 0;
         int low = 0, high = 127;
-        for (int i = 0; i < 7; i++) {
-            if (pass[i] == 'F')
+        for_each(pass.begin(), pass.end() - 3, [&](char& item) {
+            if (item == 'F')
                 high = (low + high) / 2;
-            else
-                low = (low + high) / 2 + 1;
-        }
+            else low = (low + high) / 2 + 1;
+        });
         seatID += low;
         seatID *= 8;
         low = 0, high = 7;
-        for (int i = 7; i < 10; i++) {
-            if (pass[i] == 'R')
-                low = (low + high) / 2 + 1;
-            else
+        for_each(pass.begin() + 7, pass.end(), [&](char& item) {
+            if (item == 'L')
                 high = (low + high) / 2;
-        }
+            else low = (low + high) / 2 + 1;
+        });
         seatID += low;
         return seatID;
     }
@@ -45,7 +43,7 @@ public:
         cout << "Part 1: " << seatIDs.back() << '\n';
     }
     void part2() {
-        // Seats range from 91 to 928.
+        // Observation: seats range from 91 to 928.
         int missingSeat = 0;
         for (int seat = 91; seat <= 928; seat++) {
             if (!binary_search(seatIDs.begin(), seatIDs.end(), seat)) {
