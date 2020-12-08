@@ -11,14 +11,14 @@ private:
     public:
         string identifier;
         short requiredQty;
-        component(string id, short qty): identifier(id), requiredQty(qty) {};
-        const bool operator<(const component& other) { //map comparison.
+        component(string id, short qty): identifier(id), requiredQty(qty) {}
+        const bool operator<(const component& other) {  // map comparison.
             return this->requiredQty < other.requiredQty;
         }
     };
     map <string, vector<component>> requiredBags;
-    component parseComponent(string& child) {
-        //[4 wavy green bags]
+    component parseComponent(const string& child) {
+        // [4 wavy green bags]
         string id;
         short qty = 0;
         stringstream ss(child);
@@ -31,12 +31,12 @@ private:
     void process (string& line) {
         // plaid bronze bags contain 4 wavy green bags, 4 mirrored blue bags, 4 faded magenta bags, 5 plaid olive bags.
         size_t split = line.find("contain") + 8;
-        string root = line.substr(0, line.find("bag") - 1); // [plaid bronze]
-        string childrenLine = line.substr(split, line.size() - split); // [4 wavy green bags, 4 mirrored blue bags, 4 faded magenta bags, 5 plaid olive bags]
+        string root = line.substr(0, line.find("bag") - 1);  // [plaid bronze]
+        string childrenLine = line.substr(split, line.size() - split);  // [4 wavy green bags, 4 mirrored blue bags, 4 faded magenta bags, 5 plaid olive bags]
         vector <component> childrenList;
         stringstream ss(childrenLine);
         string token;
-        while(getline(ss, token, ',')) {
+        while (getline(ss, token, ',')) {
             component newComponent = parseComponent(token);
             if (!newComponent.requiredQty) continue;
             childrenList.push_back(newComponent);
@@ -46,7 +46,7 @@ private:
     void readFile() {
         freopen("input.txt", "r", stdin);
         string line;
-        while(getline(cin, line)) {
+        while (getline(cin, line)) {
             process(line);
         }
     }
