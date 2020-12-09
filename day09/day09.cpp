@@ -20,7 +20,7 @@ private:
             numberList.push_back(stol(line));
         }
     }
-    bool exists (deque<long long> currentWindow, long long target) {
+    bool exists(deque<long long> currentWindow, long long target) {
         unordered_map <long long, bool> table;
         while (!currentWindow.empty()) {
             if (table[target - currentWindow.front()])
@@ -38,9 +38,8 @@ private:
         }
     }
     long long getSum(int& i, int& j) {
-        if (!j) {
+        if (!j)
             return prefixSum[j];
-        }
         return prefixSum[j] - prefixSum[i - 1];
     }
 public:
