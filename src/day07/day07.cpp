@@ -81,7 +81,7 @@ public:
         cout << "Part 1: " << validBags << '\n';
     }
     void part2() {
-        cout << "Part 2: " << simulate("shiny gold");
+        cout << "Part 2: " << simulate("shiny gold") << '\n';
     }
 };
 
